@@ -9,6 +9,7 @@ struct boj_code {
 fn main() {
     let (mut id, mut cookie) = infomation::input_info();
 
-    function::connection_test(cookie.clone());
+    let test_connection = function::connection_test(id.clone(),cookie.clone()).expect("인증 실패");
+    println!("{test_connection}");
 
 }
