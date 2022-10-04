@@ -1,6 +1,3 @@
-use std::fmt::format;
-
-use hyper::header;
 use reqwest::Error;
 use reqwest::header::COOKIE;
 pub fn connection_test(id:String,cookie:String) -> Result<String,Error> {
@@ -17,15 +14,16 @@ pub fn connection_test(id:String,cookie:String) -> Result<String,Error> {
     
     if res.contains(&id) {
 
-        return Ok("로그인 성공".to_string());
+        return Ok("Cookie 인증 성공".to_string());
     }
     else {
-        return Ok("로그인 실패".to_string());
+        return Ok("Cookie 인증 실패".to_string());
     }
    
 }
-pub fn get_submission_num() -> Vec<i32>{
+pub fn get_submission_num(id:String,cookie:String) -> Vec<i32>{
+    //조심해야 하는점 : 과도한 트레픽 발생 우려 (적절한 sleep으로 해결)
     let mut num:Vec<i32> = Vec::new();
-
+    
     return num;
 }
