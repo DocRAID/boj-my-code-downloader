@@ -1,11 +1,7 @@
 mod function;
 mod infomation;
-struct BojCode {
-    submission_number : u64,
-    boj_number : u32,
-    lang : String,
-    your_code : String,
-}
+
+
 fn main() {
     //id, cookie 정보를 입력받는다.
     let (id,cookie) = infomation::input_info();
@@ -15,9 +11,20 @@ fn main() {
     println!("{test_connection}");
     
     //정답을 맞은 제출번호를 다 가져와서 vector로 저장한다.
-    //https://www.acmicpc.net/status?&user_id=ldj050101&result_id=4
-    let submission_num = function::get_submission_num(id.clone(),cookie.clone());
-
+    let mut submission_numbers:Vec<String> = Vec::new();
+    match function::get_submission_num(id.clone(),cookie.clone()) {
+        Ok(val) => {
+            println!("총 {}개의 코드를 가져오는중",val.len());
+            submission_numbers=val;
+            },
+        Err(_) => {println!("의도치 않은 에러가 발생했습니다. 이슈를 남겨주세요!"); },
+    }
+    
+    for submission_number in submission_numbers{
+        //num으로 코드 크롤링
+        function::get_my_codes(submission_number);
+    }
+    
 
     //제출번호를 모두 가져온걸 바탕으로 소스코드를 긁어와 구조체 벡터에 저장.
     //그리고 boj number가 겹치지 않는지 검사.
