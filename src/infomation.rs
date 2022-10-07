@@ -16,7 +16,7 @@ pub fn input_info() -> (String,String){
     }
     else{
         id="ldj050101".to_string();
-        cookie="your cookie".to_string();
+        cookie="jl3cl9nb35q4v9j1seojtbqr0k".to_string();
     }
 
     return (id.trim().to_owned(),cookie.trim().to_owned());

@@ -3,12 +3,7 @@ use reqwest::header::COOKIE;
 use std::time::Duration;
 use std::thread::sleep;
 
-struct BojCode {
-    submission_number : u64,
-    boj_number : u32,
-    lang : String,
-    your_code : String,
-}
+use crate::BojCode;
 
 pub fn connection_test(id:String,cookie:String) -> Result<String,Error> {
     //https://docs.rs/reqwest/0.7.2/reqwest/header/struct.SetCookie.html
@@ -81,7 +76,61 @@ pub fn get_submission_num(id:String,cookie:String) -> Result<Vec<String>,Error>{
     println!("완료!");
     return Ok(num);
 }
-pub fn get_my_codes(submission_number:String){
-    format!("https://www.acmicpc.net/source/{}",submission_number);
+
+
+
+pub(crate) fn create_boj_code(submission_number:String,cookie:String) -> Result<BojCode,Error>{
+    let client = reqwest::blocking::Client::new();
+    let res = client.get(format!("https://www.acmicpc.net/source/{}",submission_number))
+        .header(COOKIE, format!("OnlineJudge={}",cookie))
+        .send()?
+        .text()
+        .unwrap();
+
+    //가져와서 구조체에 저장.
+    let (num,lang,code) = get_code_info_from_response(res);
+    let code_info:BojCode = BojCode { 
+        boj_number: num, lang: lang, your_code: code
+    };
+    return Ok(code_info);
     //이제 이거가지고 코드 가져오면 됨
+}
+
+fn get_code_info_from_response(res:String) -> (String ,String ,String){
+
+    //num lang code
+    //code
+    let mut code = filter(res.clone(),"readonly>".to_string(),"</textarea>".to_string());
+    code = html_escape::decode_html_entities(&code).to_string();
+
+    //num
+    let num = filter(res.clone(),"</td><td><a href=\"/problem/".to_string(),"\">".to_string());
+    
+    //lang
+    let lang = lang_extension_selector(filter(res.clone(),"<span class='ms-text'></span></td><td>".to_string(),"</td>".to_string()));
+    
+    return (num,lang,code);
+}
+fn filter(source:String,from:String,to:String)->String {
+    //num lang code
+    let mut filter_tag:Vec<&str>=Vec::new();
+    let mut filter_temporary:String=String::new();
+    //code
+    filter_tag = source.split(&from).collect();
+    filter_temporary = filter_tag[1].to_string();
+    filter_tag = filter_temporary.split(&to).collect();
+    return filter_tag[0].to_string();
+
+}
+
+fn lang_extension_selector(lang:String)-> String{
+    let mut extension:&str = "";
+    match lang.as_str() {
+        "C++20"|"C++17"|"C++"=> { extension = "cpp"}
+        "C99"=> { extension = "c"}
+        "Java 11"|"Java 8"=> { extension = "java"}
+        "Python 3"|"PyPy3"=> { extension = "py"}
+        _=> { extension = "txt"}
+    }
+    return extension.to_string();
 }
