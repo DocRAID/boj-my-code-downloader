@@ -1,4 +1,4 @@
-use std::{time::Duration, thread::sleep};
+use std::{time::Duration, thread::sleep, fs};
 
 mod function;
 mod infomation;
@@ -26,7 +26,9 @@ fn main() {
             submission_numbers=val;
             },
         Err(_) => {println!("의도치 않은 에러가 발생했습니다. 이슈를 남겨주세요!"); },
-    }
+    }  
+    //dir 없으면 만들고 
+    fs::create_dir_all("./download").expect("directory create failed or already exitst");
 
     for submission_number in submission_numbers{
         //num으로 코드 크롤링
@@ -34,8 +36,8 @@ fn main() {
         // let code_info:BojCode = function::create_BojCode(submission_number,cookie.clone());
         match function::create_boj_code(submission_number,cookie.clone()) {
             Ok(code_info) => {
-                println!("{}",code_info.boj_number);
-                file_system::restore_files(code_info).expect("엄...");
+                println!("문제번호 : {} 번의 코드를 가져오는중.",code_info.boj_number);
+                file_system::restore_files(code_info).expect("file exist");
             }
             Err(_) => {
 

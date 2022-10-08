@@ -4,7 +4,7 @@ use std::io;
 pub fn input_info() -> (String,String){
     let mut id:String=String::new();
     let mut cookie:String =String::new();
-    let test:bool = true;
+    let test:bool = false;
     if !test{
         print!("input your boj-id :");
         io::Write::flush(&mut io::stdout()).expect("flush failed!");
@@ -15,8 +15,8 @@ pub fn input_info() -> (String,String){
         std::io::stdin().read_line(&mut cookie).unwrap();
     }
     else{
-        id="ldj050101".to_string();
-        cookie="jl3cl9nb35q4v9j1seojtbqr0k".to_string();
+        id="your boj id".to_string();
+        cookie="your boj cookie".to_string();
     }
 
     return (id.trim().to_owned(),cookie.trim().to_owned());
