@@ -117,7 +117,7 @@ fn filter(source:String,from:String,to:String)->String {
     let mut filter_temporary:String=String::new();
     //code
     filter_tag = source.split(&from).collect();
-    filter_temporary = filter_tag[1].to_string();
+    filter_temporary = filter_tag.last().unwrap().to_string();
     filter_tag = filter_temporary.split(&to).collect();
     return filter_tag[0].to_string();
 
@@ -130,6 +130,7 @@ fn lang_extension_selector(lang:String)-> String{
         "C99"=> { extension = "c"}
         "Java 11"|"Java 8"=> { extension = "java"}
         "Python 3"|"PyPy3"=> { extension = "py"}
+        "C#"=> { extension = "cs"}
         _=> { extension = "txt"}
     }
     return extension.to_string();

@@ -30,20 +30,23 @@ fn main() {
     //dir 없으면 만들고 
     fs::create_dir_all("./download").expect("directory create failed or already exitst");
 
-    for submission_number in submission_numbers{
+    for index in 0..submission_numbers.len(){
         //num으로 코드 크롤링
         //제출번호를 모두 가져온걸 바탕으로 소스코드를 긁어와 구조체에 저장.
         // let code_info:BojCode = function::create_BojCode(submission_number,cookie.clone());
-        match function::create_boj_code(submission_number,cookie.clone()) {
+        match function::create_boj_code(submission_numbers[index].clone(),cookie.clone()) {
             Ok(code_info) => {
-                println!("문제번호 : {} 번의 코드를 가져오는중.",code_info.boj_number);
-                file_system::restore_files(code_info).expect("file exist");
+                print!("{} _ 문제번호cd :{}",index,code_info.boj_number);
+                match file_system::restore_files(code_info) {
+                    Ok(_) => println!(" ..complite!"),
+                    Err(_) => println!(" ..failed!"),
+                }
             }
             Err(_) => {
 
             }
         }
-        sleep(Duration::from_millis(500));
+        sleep(Duration::from_millis(200));
     }
     
 
