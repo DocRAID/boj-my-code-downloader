@@ -126,12 +126,72 @@ fn filter(source:String,from:String,to:String)->String {
 fn lang_extension_selector(lang:String)-> String{
     let mut extension:&str = "";
     match lang.as_str() {
-        "C++20"|"C++17"|"C++"=> { extension = "cpp"}
-        "C99"=> { extension = "c"}
-        "Java 11"|"Java 8"=> { extension = "java"}
-        "Python 3"|"PyPy3"=> { extension = "py"}
-        "C#"=> { extension = "cs"}
+        "C++14"|"C++11"|"C++20"|"C++17"|"C++"|"C++98"|"C++98 (Clang)"|"C++11 (Clang)"|"C++14 (Clang)"|"C++17 (Clang)"|"C++20 (Clang)"=> { extension = "cpp"}
+        "C11"|"C90"|"C2x"|"C99"|"C99 (Clang)"|"C11 (Clang)"|"C90 (Clang)"|"C2x (Clang)"=> { extension = "c"}
+        "Java 8 (OpenJDK)"|"Java 15"|"Java 11"|"Java 8"=> { extension = "java"}
+        "Haxe"|"Python 3"|"PyPy3"|"Python 2"|"PyPy2"=> { extension = "py"}
+        "C#"|"C# 6.0 (Mono)"|"C# 3.0 (Mono)"=> { extension = "cs"}
+        "Rust 2015"|"Rust 2018"|"Rust 2021"=> { extension = "rs"}
+        "Go"|"Go (gccgo)"=> { extension = "go"}
+        "Kotlin (JVM)"|"Kotlin (Native)"=> { extension = "kt"}
+        "Ruby 1.8"|"Ruby"|"Ruby 1.9"=> { extension = "rb"}
+        "Assembly (32bit)"|"Assembly (64bit)"=> { extension = "asm"}
+        "Bash"=> { extension = "sh"}
+        "엄준식"=> { extension = "umm"}
+        // ""|""=> { extension = ""}
         _=> { extension = "txt"}
     }
     return extension.to_string();
 }
+/* 
+헉헉 힘들다
+
+"Swift": "swift"
+"Text": "txt"
+"node.js": "js"
+"D": "d"
+"D (LDC)": "d"
+"F# (Mono)": "fs"
+"PHP": "php"
+"Pascal": "pas"
+"Scala": "scala"
+"Lua": "lua"
+"Perl": "pl"
+"Haskell": "hs"
+"F#": "fs"
+"Visual Basic": "vb"
+"Objective-C": "m"
+"Objective-C++": "mm"
+"Golfscript": "gs"
+"TypeScript": "ts"
+"VB.NET 2.0 (Mono)": "vb"
+"VB.NET 4.0 (Mono)": "vb"
+"Fortran": "f95"
+"Scheme": "scm"
+"Ada": "ada"
+"awk": "awk"
+"OCaml": "ml"
+"Brainf**k": "bf"
+"Whitespace": "ws"
+"Tcl": "tcl"
+"Rhino": "js"
+"Cobol": "cob"
+"Pike": "pike"
+"sed": "sed"
+"Boo": "boo"
+"INTERCAL": "i"
+"bc": "bc"
+"Nemerle": "n"
+"Cobra": "cobra"
+"Nimrod": "nim"
+"Algol 68": "a68"
+"Befunge": "bf"
+"FreeBASIC": "bas"
+"LOLCODE": "lol"
+"아희": "aheui"
+"Coq": "v"
+"Minecraft": "mca"
+"SystemVerilog": "sv"
+"APECODE": "ape"
+"Crystal": "cr"
+ */
