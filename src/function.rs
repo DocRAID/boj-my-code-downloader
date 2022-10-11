@@ -24,17 +24,10 @@ pub fn connection_test(id:String,cookie:String) -> Result<String,Error> {
 fn have_next_page(page:String) -> Option<String>{
     
     if !page.contains("다음 페이지") {
-        return None; //없으면 걍 하지마
+        return None; //없으면 None 리턴
     }
-    let mut filter_tag:Vec<&str> = page.split("\" id=\"next_page\">").collect();
-    let filter_num:String = filter_tag[0].to_string();
-    filter_tag = filter_num.split("result_id=4&amp;").collect();
     
-    let mut next_url = String::new();
-    if let Some(val) = filter_tag.last(){
-        next_url=val.to_string();
-    }
-    // println!("{}",next_url); 
+    let mut next_url = filter(page,"result_id=4&amp;".to_string(),"\" id=\"next_page\">".to_string());
 
     Some(format!("&{}",next_url)) //다음페이지 url 넘기기 
 }
@@ -44,7 +37,6 @@ pub fn get_submission_num(id:String,cookie:String) -> Result<Vec<String>,Error>{
     let mut num:Vec<String> = Vec::new();
     let client = reqwest::blocking::Client::new();
 
-    // let mut page:String = String::from("&top=49478682");
     let mut page:String = String::from("");
     loop {
         let res = client.get(format!("https://www.acmicpc.net/status?user_id={}&result_id=4&{}",id,page))
@@ -112,10 +104,10 @@ fn get_code_info_from_response(res:String) -> (String ,String ,String){
     return (num,lang,code);
 }
 fn filter(source:String,from:String,to:String)->String {
-    //num lang code
+    
     let mut filter_tag:Vec<&str>=Vec::new();
     let mut filter_temporary:String=String::new();
-    //code
+    
     filter_tag = source.split(&from).collect();
     filter_temporary = filter_tag.last().unwrap().to_string();
     filter_tag = filter_temporary.split(&to).collect();

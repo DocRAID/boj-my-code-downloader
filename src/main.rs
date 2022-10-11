@@ -10,6 +10,7 @@ pub struct BojCode {
     lang : String,
     your_code : String,
 }
+
 fn main() {
     //id, cookie 정보를 입력받는다.
     let (id,cookie) = infomation::input_info();
@@ -26,8 +27,8 @@ fn main() {
             submission_numbers=val;
             },
         Err(_) => {println!("의도치 않은 에러가 발생했습니다. 이슈를 남겨주세요!"); },
-    }  
-    //dir 없으면 만들고 
+    }
+ 
     fs::create_dir_all("./download").expect("directory create failed or already exitst");
 
     for index in 0..submission_numbers.len(){
@@ -35,23 +36,20 @@ fn main() {
         //제출번호를 모두 가져온걸 바탕으로 소스코드를 긁어와 구조체에 저장.
         match function::create_boj_code(submission_numbers[index].clone(),cookie.clone()) {
             Ok(code_info) => {
-                print!("{} _ 문제번호cd :{}",index,code_info.boj_number);
+                print!("{} _ 문제번호 : {}", index, code_info.boj_number);
+
                 match file_system::restore_files(code_info) {
                     Ok(_) => println!(" ..complite!"),
-                    Err(_) => println!(" ..failed!"),
+                    Err(code_info) => println!(" ..failed!"),
                 }
             }
             Err(_) => {
-
+                println!("정보를 가져오는데 문제가 발생했습니다. 이슈에 남겨주세요");
             }
         }
         sleep(Duration::from_millis(200));
     }
-    
 
-    //그리고 boj number가 겹치지 않는지 검사.
-    //https://www.acmicpc.net/source/46588382
-
-    //구조체 벡터에 있는 정보를 파일로 저장
+    println!("다운로드 성공! 프로그램을 종료합니다.");
     
 }
