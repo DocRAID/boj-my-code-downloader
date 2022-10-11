@@ -33,7 +33,6 @@ fn main() {
     for index in 0..submission_numbers.len(){
         //num으로 코드 크롤링
         //제출번호를 모두 가져온걸 바탕으로 소스코드를 긁어와 구조체에 저장.
-        // let code_info:BojCode = function::create_BojCode(submission_number,cookie.clone());
         match function::create_boj_code(submission_numbers[index].clone(),cookie.clone()) {
             Ok(code_info) => {
                 print!("{} _ 문제번호cd :{}",index,code_info.boj_number);
