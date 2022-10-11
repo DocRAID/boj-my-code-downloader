@@ -40,7 +40,7 @@ fn main() {
 
                 match file_system::restore_files(code_info) {
                     Ok(_) => println!(" ..complite!"),
-                    Err(code_info) => println!(" ..failed!"),
+                    Err(_) => println!(" ..failed!"),
                 }
             }
             Err(_) => {

@@ -48,7 +48,7 @@ pub fn get_submission_num(id:String,cookie:String) -> Result<Vec<String>,Error>{
         let document = scraper::Html::parse_document(&res);
         let num_selector = scraper::Selector::parse("table#status-table.table.table-striped.table-bordered>tbody>tr").unwrap();
         let source = document.select(&num_selector).map(|x| x.inner_html());
-        //아래는 원하는 내용을 정제하는것. 이런... 너무 더럽고
+        //아래는 원하는 내용을 정제하는것.
         source
         .zip(1..100)
         .for_each(|(item, _number)| {
